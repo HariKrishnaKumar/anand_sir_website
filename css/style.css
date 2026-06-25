@@ -835,12 +835,18 @@
     
     .advantage h2 {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin-bottom: 60px;
         /* font-family:'Poppins', sans-serif; */
         font-family: 'Poppins', sans-serif;
         font-weight: 100;
         color: var(--gold1);
+    }
+    
+    .advantage h3 {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-bottom: 60px;
     }
     
     .advantage-grid {
@@ -946,7 +952,7 @@
     
     .block h2 {
         color: var(--gold1);
-        font-size: 2rem;
+        font-size: 1.2rem;
         margin-bottom: 15px;
     }
     /* ===================================
