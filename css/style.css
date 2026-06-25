@@ -357,6 +357,7 @@
     .stat-card h2 {
         color: var(--gold1);
         font-size: 3rem;
+        line-height: 1;
     }
     
     .advantage .stats {
@@ -545,7 +546,7 @@
     
     .why-yajurvedh h2 {
         text-align: center;
-        font-size: 2.2rem;
+        font-size: 1.2rem;
         color: var(--gold1);
         margin-bottom: 60px;
     }
@@ -812,8 +813,8 @@
     .why-yajurvedh h2 {
         text-align: center;
         font-family: 'Poppins', sans-serif;
-        font-size: 2.2rem;
-        color: var(--gold1);
+        /* font-size: 1.2rem; */
+        color: var(--text);
         margin-bottom: 60px;
         font-weight: 100;
     }
@@ -834,7 +835,7 @@
     
     .advantage h2 {
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 2rem;
         margin-bottom: 60px;
         /* font-family:'Poppins', sans-serif; */
         font-family: 'Poppins', sans-serif;
@@ -1138,9 +1139,9 @@
             margin-bottom: 12px;
             margin-top: 12px;
         }
-        .service-title{
+        .service-title {
             color: var(--gold1);
-        font-weight: 400;
+            font-weight: 400;
         }
     }
     /* ===================================
@@ -1180,11 +1181,12 @@
         align-items: center;
         flex-wrap: wrap;
         font-family: 'Rouge Script', cursive;
-        font-size: 6rem;
+        font-size: 3rem;
         line-height: 1.1;
         color: rgba(245, 245, 245, 0.496);
         position: relative;
         z-index: 20;
+        letter-spacing: 3px;
         margin: 0 auto 20px auto;
     }
     
@@ -1515,36 +1517,34 @@
             font-size: .85rem;
             white-space: nowrap;
         }
-        .block{
+        .block {
             width: 100%;
             max-width: 420px;
             margin: 0 auto 40px;
             text-align: center;
         }
-        .block h2{
-        color: var(--gold1);
-        font-size: 1.25rem;
-        margin-bottom: 15px;
-        text-align: center;
-        font-weight: 600px;
+        .block h2 {
+            color: var(--gold1);
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600px;
         }
-
-        .block p{
+        .block p {
             font-size: small;
             text-align: center;
             font-weight: 300px;
             line-height: 1.8;
             margin: 0 auto;
         }
-        .why-what{
+        .why-what {
             /* taxt-align: center; */
         }
-        .right{
+        .right {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
     }
     /* @media (max-width: 768px) {
     .stats {
