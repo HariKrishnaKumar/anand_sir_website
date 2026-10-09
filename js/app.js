@@ -2,11 +2,15 @@
    LOADER
 ===================================== */
 
-window.addEventListener("load", () => {
+// Hide the loader as soon as the DOM is parsed — not on window "load",
+// which waits for every image and the hero video and blocks the whole
+// page behind a black screen. A short fade keeps the look identical.
+
+function hideLoader() {
 
     const loader = document.querySelector(".loader");
 
-    if (loader) {
+    if (loader && loader.style.display !== "none") {
 
         loader.style.opacity = "0";
 
@@ -14,10 +18,23 @@ window.addEventListener("load", () => {
 
             loader.style.display = "none";
 
-        }, 600);
+        }, 400);
     }
 
-});
+}
+
+// Safety net: never trap the visitor behind the loader for more than 2.5s.
+setTimeout(hideLoader, 2500);
+
+if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", hideLoader);
+
+} else {
+
+    hideLoader();
+
+}
 
 
 /* =====================================
@@ -545,131 +562,3 @@ if (footer) {
         " Yajurvedh. All rights reserved.";
 
 }
-/* =====================================
-   LETTER BY LETTER GOLD DISSOLVE
-===================================== */
-
-// window.addEventListener("load", () => {
-
-//     const title =
-//         document.getElementById(
-//             "heroTitle"
-//         );
-
-//     if (!title) return;
-
-//     const text =
-//         title.innerText;
-
-//     title.innerHTML = "";
-
-//     [...text].forEach(char => {
-
-//         const span =
-//             document.createElement("span");
-
-//         span.className =
-//             "hero-letter";
-
-//         span.textContent =
-//             char === " " ?
-//             "\u00A0" :
-//             char;
-
-//         title.appendChild(span);
-
-//     });
-
-//     const letters =
-//         title.querySelectorAll(
-//             ".hero-letter"
-//         );
-
-//     function dissolveLetter(letter) {
-
-//         const rect =
-//             letter.getBoundingClientRect();
-
-//         for (let i = 0; i < 40; i++) {
-
-//             const particle =
-//                 document.createElement(
-//                     "div"
-//                 );
-
-//             particle.className =
-//                 "letter-particle";
-
-//             particle.style.left =
-//                 rect.left +
-//                 rect.width / 2 +
-//                 "px";
-
-//             particle.style.top =
-//                 rect.top +
-//                 rect.height / 2 +
-//                 window.scrollY +
-//                 "px";
-
-//             document.getElementById(
-//                 "heroContent"
-//             ).appendChild(
-//                 particle
-//             );
-
-//             let x =
-//                 (Math.random() - 0.5) * 40;
-
-//             let y = -(Math.random() * 120 + 40);
-
-//             particle.animate([
-
-//                 {
-//                     transform: "translate(0,0) scale(1)",
-//                     opacity: 1
-//                 },
-
-//                 {
-//                     transform: `translate(${x}px,${y}px) scale(0)`,
-//                     opacity: 0
-//                 }
-
-//             ], {
-
-//                 duration: 2000,
-
-//                 easing: "ease-out"
-
-//             });
-
-//             setTimeout(() => {
-
-//                 particle.remove();
-
-//             }, 2000);
-
-//         }
-
-//         letter.style.opacity = "0";
-
-//     }
-
-//     setTimeout(() => {
-
-//         letters.forEach(
-//             (letter, index) => {
-
-//                 setTimeout(() => {
-
-//                     dissolveLetter(
-//                         letter
-//                     );
-
-//                 }, index * 180);
-
-//             }
-//         );
-
-//     }, 5000);
-
-// });
