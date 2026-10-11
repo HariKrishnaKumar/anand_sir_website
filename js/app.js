@@ -562,3 +562,59 @@ if (footer) {
         " Yajurvedh. All rights reserved.";
 
 }
+
+
+/* =====================================
+   HERO VIDEO QUALITY SELECTOR
+=====================================
+Start with 720p (fast, good quality). If the screen is large,
+gradually upgrade to 1080p. Never goes below 720p.
+*/
+
+(function () {
+
+    const video = document.getElementById("heroVideo");
+
+    if (!video || !window.matchMedia) return;
+
+    const canUpgradeTo1080 = window.matchMedia(
+        "(min-width: 1200px) and (min-height: 700px)"
+    );
+
+    let currentTier = "720";
+
+    function tryUpgrade(tier) {
+
+        if (tier === currentTier) return;
+
+        currentTier = tier;
+
+        const wasPlaying = !video.paused;
+        const time = video.currentTime;
+
+        video.src = "videos/hero-" + tier + ".mp4";
+        video.load();
+
+        video.addEventListener("loadedmetadata", function upgradeSeek() {
+
+            video.removeEventListener("loadedmetadata", upgradeSeek);
+
+            try { video.currentTime = time; } catch (e) { /* ignore */ }
+
+            video.play().catch(function () { /* autoplay policy */ });
+        }, { once: false });
+    }
+
+    function applyTier() {
+        tryUpgrade(canUpgradeTo1080.matches ? "1080" : "720");
+    }
+
+    applyTier();
+
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(applyTier, 300);
+    });
+
+})();

@@ -57,9 +57,10 @@ function optimizeVideos() {
   jobs.length = 0; // real jobs:
 
   const videoJobs = [
+    // 480p kept as fallback; hero now serves 720p minimum, 1080p on large screens
     { in: path.join(VID_DIR, "hero.mp4"), out: path.join(OUT_VID, "hero-480.mp4"), w: 854, crf: 31 },
-    { in: path.join(VID_DIR, "hero.mp4"), out: path.join(OUT_VID, "hero-720.mp4"), w: 1280, crf: 29 },
-    { in: path.join(VID_DIR, "Hero_1_.hevc.mp4"), out: path.join(OUT_VID, "hero-mobile-480.mp4"), w: 854, crf: 31 },
+    { in: path.join(VID_DIR, "hero.mp4"), out: path.join(OUT_VID, "hero-720.mp4"), w: 1280, crf: 28 },
+    { in: path.join(VID_DIR, "hero.mp4"), out: path.join(OUT_VID, "hero-1080.mp4"), w: 1920, crf: 27 },
   ];
   for (const j of videoJobs) {
     if (!fs.existsSync(j.in)) { console.log("SKIP (missing):", j.in); continue; }

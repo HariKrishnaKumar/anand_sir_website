@@ -1,0 +1,77 @@
+Free CDN Setup Guide — yajurvedh.com
+=====================================
+Goal: serve site videos from a fast, worldwide, FREE CDN (Cloudflare R2)
+instead of only relying on GitHub Pages.
+
+What we have
+------------
+- Site:        https://www.yajurvedh.com  (GitHub Pages)
+- Repo:        https://github.com/HariKrishnaKumar/anand_sir_website
+- Videos:      videos/hero-480.mp4 (fallback), videos/hero-720.mp4 (new minimum),
+               videos/hero-1080.mp4 (large screens)
+- Quality:     index.html loads 720p by default; js/app.js upgrades to 1080p
+               on screens >= 1200px wide.
+
+Free tier facts (Cloudflare R2)
+-------------------------------
+- 10 GB storage, free egress (no bandwidth billing), fair-use request limits.
+- Served over Cloudflare's global CDN with edge nodes in India.
+- No 20 MB file-size cap (unlike jsDelivr).
+- Requires moving DNS to Cloudflare (free plan, no card needed).
+
+STEP 1 — Put the domain on Cloudflare (free)
+  1. Sign up at https://dash.cloudflare.com  (Free plan)
+  2. Click "Add a site" -> type yajurvedh.com -> choose the Free plan
+  3. Cloudflare shows two nameservers (e.g. bob.ns.cloudflare.com)
+  4. At your registrar (where yajurvedh.com was bought) replace the
+     current nameservers with those two Cloudflare ones
+  5. Wait for activation (minutes to a few hours; the site keeps working)
+
+STEP 2 — Create the R2 bucket
+  1. Cloudflare dashboard -> left sidebar -> R2 Object Storage -> Get started
+  2. "Create bucket" -> name: yajurvedh-cdn -> location hint: APAC
+     (best for India traffic)
+  3. Upload the videos keeping the same folder structure:
+       videos/hero-480.mp4
+       videos/hero-720.mp4
+       videos/hero-1080.mp4
+
+STEP 3 — Make it public on your domain
+  1. Open the bucket -> Settings tab -> Custom Domains -> "Connect Domain"
+  2. Enter: cdn.yajurvedh.com -> confirm
+     (Cloudflare adds the DNS record automatically)
+  3. Wait for status "Active" (a minute or two)
+     -> Free SSL, India CDN edge included
+
+STEP 4 — Verify
+  Open in a browser:
+       https://cdn.yajurvedh.com/videos/hero-720.mp4
+  If it plays, the CDN is live.
+
+STEP 5 — Wire up the website
+  Tell the assistant "CDN is live" and it will:
+  - Point index.html and the quality selector in js/app.js to the
+    https://cdn.yajurvedh.com/videos/... URLs
+  - Add an automatic fallback to the local GitHub Pages files so playback
+    never breaks if the CDN has a hiccup
+
+Optional alternative (zero setup, but 20 MB/file cap)
+-----------------------------------------------------
+jsDelivr serves files straight from the GitHub repo:
+  https://cdn.jsdelivr.net/gh/HariKrishnaKumar/anand_sir_website@main/videos/hero-720.mp4
+Requires the repo to be public. Not recommended for files that may grow.
+
+Do NOT use Google Drive for website media
+-----------------------------------------
+Drive throttles/rate-limits direct streaming, can block playback, and is
+against their ToS for media hosting.
+
+Local video pipeline (already done in this repo)
+------------------------------------------------
+- Re-encoded with ffmpeg (node_modules/ffmpeg-static) from
+  _original_media/videos/hero.mp4 (original 1080p, 45 MB):
+    hero-720.mp4  = 1280x720,  ~6.4 MB  (crf 28)
+    hero-1080.mp4 = 1920x1080, ~16 MB   (crf 27)
+- optimize-media.js updated to regenerate both tiers in future runs.
+- Browser behavior: 720p instant start -> silent upgrade to 1080p on
+  large screens, resuming from the same playback position.
