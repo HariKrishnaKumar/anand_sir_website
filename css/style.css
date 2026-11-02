@@ -24,7 +24,7 @@
 =================================== */
     
      :root {
-        --gold: #c8a96a55;
+        --gold: #c8a96a;
         --gold1: #c8a96a;
         --gold-dark: #a88442;
         --bg: #0b0f14;
@@ -588,7 +588,7 @@
         visibility: hidden;
         transition: opacity .35s ease, visibility .35s ease, margin-top .35s ease;
         margin-top: 0;
-        text-align: center;
+        text-align: left;
     }
     
     .why-card-details ul {
@@ -604,7 +604,7 @@
         color: #d8d8d8;
         font-size: 1rem;
         line-height: 0.5;
-        text-align: center;
+        text-align: left;
         word-break: break-word;
     }
     /* .why-card-details {
@@ -1187,9 +1187,9 @@
         align-items: center;
         flex-wrap: wrap;
         font-family: 'Rouge Script', cursive;
-        font-size: 3rem;
+        font-size: 2.5rem;
         line-height: 1.1;
-        color: rgba(245, 245, 245, 0.496);
+        color: rgb(245, 245, 245);
         position: relative;
         z-index: 20;
         letter-spacing: 3px;
@@ -1199,10 +1199,10 @@
     .hero-content p {
         position: relative;
         font-family: 'Poppins', sans-serif;
-        font-size: 30px;
+        font-size: 20px;
         z-index: 20;
         margin: 0 auto 20px auto;
-        color: rgba(245, 245, 245, 0.496);
+        color: rgb(245, 245, 245);
         text-transform: none !important;
         font-family: 'Poppins', sans-serif;
     }
@@ -1302,7 +1302,7 @@
             font-size: 15px;
             z-index: 20;
             margin: 0 auto 20px auto;
-            color: rgba(245, 245, 245, 0.34);
+            color: rgb(245, 245, 245);
         }
         .stats {
             grid-template-columns: 1fr;
