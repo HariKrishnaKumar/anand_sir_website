@@ -2,11 +2,15 @@
    LOADER
 ===================================== */
 
-window.addEventListener("load", () => {
+// Hide the loader as soon as the DOM is parsed — not on window "load",
+// which waits for every image and the hero video and blocks the whole
+// page behind a black screen. A short fade keeps the look identical.
+
+function hideLoader() {
 
     const loader = document.querySelector(".loader");
 
-    if (loader) {
+    if (loader && loader.style.display !== "none") {
 
         loader.style.opacity = "0";
 
@@ -14,10 +18,23 @@ window.addEventListener("load", () => {
 
             loader.style.display = "none";
 
-        }, 600);
+        }, 400);
     }
 
-});
+}
+
+// Safety net: never trap the visitor behind the loader for more than 2.5s.
+setTimeout(hideLoader, 2500);
+
+if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", hideLoader);
+
+} else {
+
+    hideLoader();
+
+}
 
 
 /* =====================================
@@ -545,131 +562,59 @@ if (footer) {
         " Yajurvedh. All rights reserved.";
 
 }
+
+
 /* =====================================
-   LETTER BY LETTER GOLD DISSOLVE
-===================================== */
+   HERO VIDEO QUALITY SELECTOR
+=====================================
+Start with 720p (fast, good quality). If the screen is large,
+gradually upgrade to 1080p. Never goes below 720p.
+*/
 
-// window.addEventListener("load", () => {
+(function () {
 
-//     const title =
-//         document.getElementById(
-//             "heroTitle"
-//         );
+    const video = document.getElementById("heroVideo");
 
-//     if (!title) return;
+    if (!video || !window.matchMedia) return;
 
-//     const text =
-//         title.innerText;
+    const canUpgradeTo1080 = window.matchMedia(
+        "(min-width: 1200px) and (min-height: 700px)"
+    );
 
-//     title.innerHTML = "";
+    let currentTier = "720";
 
-//     [...text].forEach(char => {
+    function tryUpgrade(tier) {
 
-//         const span =
-//             document.createElement("span");
+        if (tier === currentTier) return;
 
-//         span.className =
-//             "hero-letter";
+        currentTier = tier;
 
-//         span.textContent =
-//             char === " " ?
-//             "\u00A0" :
-//             char;
+        const wasPlaying = !video.paused;
+        const time = video.currentTime;
 
-//         title.appendChild(span);
+        video.src = "videos/hero-" + tier + ".mp4";
+        video.load();
 
-//     });
+        video.addEventListener("loadedmetadata", function upgradeSeek() {
 
-//     const letters =
-//         title.querySelectorAll(
-//             ".hero-letter"
-//         );
+            video.removeEventListener("loadedmetadata", upgradeSeek);
 
-//     function dissolveLetter(letter) {
+            try { video.currentTime = time; } catch (e) { /* ignore */ }
 
-//         const rect =
-//             letter.getBoundingClientRect();
+            video.play().catch(function () { /* autoplay policy */ });
+        }, { once: false });
+    }
 
-//         for (let i = 0; i < 40; i++) {
+    function applyTier() {
+        tryUpgrade(canUpgradeTo1080.matches ? "1080" : "720");
+    }
 
-//             const particle =
-//                 document.createElement(
-//                     "div"
-//                 );
+    applyTier();
 
-//             particle.className =
-//                 "letter-particle";
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(applyTier, 300);
+    });
 
-//             particle.style.left =
-//                 rect.left +
-//                 rect.width / 2 +
-//                 "px";
-
-//             particle.style.top =
-//                 rect.top +
-//                 rect.height / 2 +
-//                 window.scrollY +
-//                 "px";
-
-//             document.getElementById(
-//                 "heroContent"
-//             ).appendChild(
-//                 particle
-//             );
-
-//             let x =
-//                 (Math.random() - 0.5) * 40;
-
-//             let y = -(Math.random() * 120 + 40);
-
-//             particle.animate([
-
-//                 {
-//                     transform: "translate(0,0) scale(1)",
-//                     opacity: 1
-//                 },
-
-//                 {
-//                     transform: `translate(${x}px,${y}px) scale(0)`,
-//                     opacity: 0
-//                 }
-
-//             ], {
-
-//                 duration: 2000,
-
-//                 easing: "ease-out"
-
-//             });
-
-//             setTimeout(() => {
-
-//                 particle.remove();
-
-//             }, 2000);
-
-//         }
-
-//         letter.style.opacity = "0";
-
-//     }
-
-//     setTimeout(() => {
-
-//         letters.forEach(
-//             (letter, index) => {
-
-//                 setTimeout(() => {
-
-//                     dissolveLetter(
-//                         letter
-//                     );
-
-//                 }, index * 180);
-
-//             }
-//         );
-
-//     }, 5000);
-
-// });
+})();

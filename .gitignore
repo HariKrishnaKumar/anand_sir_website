@@ -1,0 +1,6 @@
+# Local backups of original (heavy) media — do not publish
+_original_media/
+_backup_html/
+
+# Dependency folders
+node_modules/
