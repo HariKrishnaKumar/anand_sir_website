@@ -1023,6 +1023,9 @@
             row-gap: 90px;
             column-gap: 30px;
         }
+        .about-image img {
+            height: 300px;
+        }
         .service-grid {
             row-gap: 130px;
         }
